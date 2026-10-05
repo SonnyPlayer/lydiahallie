@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Teilen" />
+    <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+    <meta
+      name="description"
+      content="Rechnung auf dem iPhone aufteilen: Trinkgeld, centgenaue Anteile und Aufrunden. Funktioniert offline."
+    />
+    <title>Teilen</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" href="/icons/favicon-32.png" sizes="32x32" />
+    <link rel="stylesheet" href="/css/app.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <p class="eyebrow">Rechnung</p>
+        <h1>Teilen</h1>
+      </header>
+
+      <section class="hint" id="install-hint" hidden>
+        <p>
+          Auf dem iPhone in Safari öffnen, dann
+          <strong>Teilen → Zum Home-Bildschirm</strong>. Danach startet Teilen wie eine App und
+          bleibt offline verfügbar.
+        </p>
+        <button type="button" class="text-button" id="dismiss-hint">Verstanden</button>
+      </section>
+
+      <form id="bill-form" novalidate>
+        <section class="card">
+          <label for="amount">Betrag</label>
+          <div class="amount-row">
+            <input
+              id="amount"
+              name="amount"
+              inputmode="decimal"
+              enterkeyhint="done"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              placeholder="0,00"
+              maxlength="12"
+              aria-describedby="amount-error"
+            />
+            <span class="currency" aria-hidden="true">€</span>
+          </div>
+          <p class="field-error" id="amount-error" hidden>Bitte einen Betrag wie 42,50 eingeben.</p>
+        </section>
+
+        <section class="card">
+          <div class="card-label-row">
+            <span id="people-label">Personen</span>
+            <span class="people-value" id="people-value">2</span>
+          </div>
+          <div class="stepper" role="group" aria-labelledby="people-label">
+            <button type="button" id="people-dec" aria-label="Eine Person weniger">−</button>
+            <button type="button" id="people-inc" aria-label="Eine Person mehr">+</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <span class="card-label" id="tip-label">Trinkgeld</span>
+          <div class="chips" role="group" aria-labelledby="tip-label" id="tip-chips">
+            <button type="button" class="chip" data-tip="0">0 %</button>
+            <button type="button" class="chip" data-tip="5">5 %</button>
+            <button type="button" class="chip" data-tip="10">10 %</button>
+            <button type="button" class="chip" data-tip="15">15 %</button>
+            <button type="button" class="chip" data-tip="custom">Andere</button>
+          </div>
+          <label class="custom-tip" id="custom-tip-wrap" hidden>
+            Prozent
+            <input id="custom-tip" inputmode="numeric" maxlength="3" value="10" />
+          </label>
+        </section>
+
+        <section class="card">
+          <span class="card-label" id="round-label">Aufrunden</span>
+          <div class="chips" role="group" aria-labelledby="round-label" id="round-chips">
+            <button type="button" class="chip" data-round="exact">Exakt</button>
+            <button type="button" class="chip" data-round="half">50 Cent</button>
+            <button type="button" class="chip" data-round="euro">1 Euro</button>
+          </div>
+        </section>
+
+        <section class="card result" aria-live="polite">
+          <p class="result-empty" id="result-empty">Betrag eingeben, dann siehst du die Anteile.</p>
+          <div id="result-body" hidden>
+            <p class="caption" id="result-caption">pro Person</p>
+            <p class="hero" id="result-hero">0,00 €</p>
+            <div class="split-lines" id="split-lines" hidden></div>
+            <p class="detail" id="result-detail"></p>
+            <dl class="rows" id="result-rows"></dl>
+          </div>
+        </section>
+      </form>
+
+      <div class="share-bar">
+        <pre class="share-output" id="share-output" hidden></pre>
+        <button type="button" class="share" id="share-button" disabled>Ergebnis teilen</button>
+        <button type="button" class="text-button reset" id="reset-button">Zurücksetzen</button>
+      </div>
+    </div>
+
+    <p class="toast" id="toast" role="status" hidden></p>
+    <noscript>
+      <p class="noscript">Teilen braucht JavaScript. In Safari auf dem iPhone ist es standardmäßig aktiv.</p>
+    </noscript>
+    <script src="/js/calc.js" defer></script>
+    <script src="/js/app.js" defer></script>
+  </body>
+</html>

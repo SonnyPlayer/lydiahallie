@@ -1,0 +1,5 @@
+{
+  "name": "Teilen",
+  "install": "test -s index.html\ntest -s js/calc.js\ntest -s css/app.css",
+  "start": "bash .cursor/start.sh"
+}
